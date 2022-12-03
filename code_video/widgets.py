@@ -163,7 +163,7 @@ class Connection(VGroup):
     An arrow connection between two objects
     """
 
-    def __init__(self, source: Mobject, target: Mobject, label: Optional[str] = None, font=DEFAULT_FONT, **kwargs):
+    def __init__(self, source: Mobject, target: Mobject, label: Optional[str] = None, text_attrs=None, **kwargs):
         """
         Args:
             source: The source object
@@ -171,7 +171,6 @@ class Connection(VGroup):
             label: The optional label text to put over the arrow
         """
         super().__init__(**kwargs)
-        self.font = font
         label_direction = UP
         label_buff = 0
 
@@ -195,7 +194,9 @@ class Connection(VGroup):
             raise ValueError("Unable to connect")
 
         self.add(arrow)
+        if text_attrs is None:
+            text_attrs = {"font_size": 24, "font": DEFAULT_FONT, "slant": ITALIC}
         if label:
-            text = Text(label, font=self.font, font_size=24, slant=ITALIC)
+            text = Text(label, **text_attrs)
             text.next_to(arrow, direction=label_direction, buff=label_buff)
             self.add(text)
