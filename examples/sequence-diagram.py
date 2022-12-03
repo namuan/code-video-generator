@@ -26,7 +26,7 @@ class SequenceDiagramsScene(CodeScene):
         app.to(web, "Value from db")
         web.to(browser, "HTML response")
 
-        title = Text("Sequence Diagram", font=DEFAULT_FONT, size=0.8)
+        title = Text("Sequence Diagram", font=DEFAULT_FONT, font_size=24)
         title.to_edge(UP)
         self.add(title)
         diagram.next_to(title, DOWN)

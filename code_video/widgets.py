@@ -112,7 +112,7 @@ class TextBox(BoxBase):
             text: The text to display
         """
         if text_attrs is None:
-            text_attrs = {"size": 0.5, "font": DEFAULT_FONT}
+            text_attrs = {"font_size": 24, "font": DEFAULT_FONT}
         if font:
             text_attrs["font"] = font
         super().__init__(text, text_attrs=text_attrs, **kwargs)
@@ -135,7 +135,7 @@ class NoteBox(BoxBase):
             text: The text to display
         """
         if text_attrs is None:
-            text_attrs = {"size": 0.5, "font": DEFAULT_FONT}
+            text_attrs = {"font_size": 24, "font": DEFAULT_FONT}
         if font:
             text_attrs["font"] = font
         super().__init__(text, text_attrs=text_attrs, **kwargs)
@@ -187,7 +187,7 @@ class Connection(VGroup):
 
         self.add(arrow)
         if label:
-            text = Text(label, font=self.font, size=0.5, slant=ITALIC)
+            text = Text(label, font=self.font, font_size=24, slant=ITALIC)
             text.next_to(arrow, direction=label_direction, buff=label_buff)
             self.add(text)
 

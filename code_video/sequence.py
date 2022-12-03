@@ -19,8 +19,8 @@ from manim import Text
 from manim import UP
 from manim import VGroup
 from manim import WHITE
-from manim.mobject.geometry import DEFAULT_DASH_LENGTH
-from manim.mobject.geometry import Polygon
+from manim.constants import DEFAULT_DASH_LENGTH
+from manim.mobject.geometry.polygram import Polygon
 from numba import np
 
 from code_video.widgets import DEFAULT_FONT
@@ -28,7 +28,6 @@ from code_video.widgets import NoteBox
 from code_video.widgets import TextBox
 
 ARROW_STROKE_WIDTH = DEFAULT_STROKE_WIDTH * 1.2
-
 
 class Actor(VGroup):
     """
@@ -49,7 +48,6 @@ class Actor(VGroup):
             end=[self.block.get_center()[0], self.block.get_bottom()[1], 0],
             dash_length=DEFAULT_DASH_LENGTH * 2,
             stroke_width=DEFAULT_STROKE_WIDTH / 2,
-            positive_space_ratio=0.5,
         )
         self.bblock = self.block.copy()
         self.bblock.next_to(self.line, direction=DOWN, buff=0)
@@ -62,7 +60,6 @@ class Actor(VGroup):
             end=[self.block.get_center()[0], self.block.get_bottom()[1] - middle_height, 0],
             dash_length=DEFAULT_DASH_LENGTH * 2,
             stroke_width=DEFAULT_STROKE_WIDTH / 2,
-            positive_space_ratio=0.5,
         )
         self.bblock = self.block.copy()
         self.bblock.next_to(self.line, direction=DOWN, buff=0)
@@ -123,7 +120,7 @@ class ActorArrow(Interaction):
             buff=0,
             stroke_width=ARROW_STROKE_WIDTH,
         )
-        text = Text(self.label, font=self.font, size=0.5, slant=ITALIC)
+        text = Text(self.label, font=self.font, font_size=24, slant=ITALIC)
         text.next_to(line, direction=UP, buff=0)
         self.add(line, text)
 
@@ -152,7 +149,7 @@ class Note(Interaction):
         block = NoteBox(
             self.label,
             font=source.font,
-            text_attrs={"size": 0.5, "font": source.font},
+            text_attrs={"font_size": 24, "font": source.font},
             color=WHITE,
             border_color=WHITE,
             bg_color="#FFFFFF00",
@@ -198,7 +195,7 @@ class SelfArrow(Interaction):
         )
         line_block.add(line, arrow)
 
-        title = Text(self.label, font=self.source.font, size=0.5, slant=ITALIC)
+        title = Text(self.label, font=self.source.font, font_size=24, slant=ITALIC)
         title.next_to(line_block)
 
         block = VGroup()

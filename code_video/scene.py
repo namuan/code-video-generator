@@ -173,7 +173,7 @@ class CodeScene(MovingCameraScene):
         if title is None:
             title = path
 
-        title = Text(title, color=WHITE).to_edge(edge=UP)
+        title = Text(title, font_size=20, color=WHITE).to_edge(edge=UP)
         self.add(title)
         tex.next_to(title, DOWN)
 
@@ -225,7 +225,7 @@ class CodeScene(MovingCameraScene):
         if not caption:
             self.play(ApplyMethod(code.full_size))
         else:
-            callout = TextBox(caption, text_attrs=dict(size=0.4, font=DEFAULT_FONT))
+            callout = TextBox(caption, text_attrs=dict(font_size=24, font=DEFAULT_FONT))
             callout.align_to(code.line_numbers[start - code.line_no_from], UP)
             callout.set_x(layout.get_x(3), LEFT)
             actions += [HighlightLines(code, start, end), FadeIn(callout)]
