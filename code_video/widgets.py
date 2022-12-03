@@ -11,8 +11,8 @@ from manim import ITALIC
 from manim import LEFT
 from manim import Mobject
 from manim import Polygon
-from manim import Rectangle
 from manim import RIGHT
+from manim import Rectangle
 from manim import Text
 from manim import UP
 from manim import VGroup
@@ -33,17 +33,17 @@ VERTICAL_ARROW_LABEL_BUFF = 0.2
 
 class BoxBase(VGroup):
     def __init__(
-        self,
-        text: str,
-        text_attrs=None,
-        wrap_at=30,
-        rounded=False,
-        shadow=True,
-        bg_color="random",
-        border_color=WHITE,
-        border_padding=0.5,
-        color_palette=("#00F6F6", "#F6A300", "#7BF600"),
-        **kwargs,
+            self,
+            text: str,
+            text_attrs=None,
+            wrap_at=30,
+            rounded=False,
+            shadow=True,
+            bg_color="random",
+            border_color=WHITE,
+            border_padding=0.5,
+            color_palette=("#00F6F6", "#F6A300", "#7BF600"),
+            **kwargs,
     ):
         super().__init__(**kwargs)
         self.bg_color = bg_color
@@ -58,10 +58,14 @@ class BoxBase(VGroup):
         self.text_attrs = text_attrs
         self.text = text
 
+    def _get_text_height(self, text: Text) -> float:
+        return max(Text("Ay", font=text.font).get_height(), text.get_height())
+
     def _box(
-        self,
-        text,
-        border_builder: Callable[[Text], Polygon],
+            self,
+            text,
+            border_builder: Callable[[Text], Polygon],
+            text_alignment_to_border=None
     ):
 
         if self.wrap_at:
@@ -74,7 +78,11 @@ class BoxBase(VGroup):
         border.set_fill(color=bg_color, opacity=bg_opacity)
         if self.rounded:
             border.round_corners(ROUNDED_RADIUS)
-        title.move_to(border)
+
+        if text_alignment_to_border is not None:
+            title.move_to(border, aligned_edge=DOWN)
+        else:
+            title.move_to(border)
         self.add(border, title)
         if self.shadow and bg_opacity:
             s_rect = border.copy()
@@ -119,7 +127,8 @@ class TextBox(BoxBase):
         self._box(
             text=text,
             border_builder=lambda title: Rectangle(
-                height=_get_text_height(title) + self.border_padding, width=title.get_width() + self.border_padding
+                height=self._get_text_height(title) + self.border_padding,
+                width=title.get_width() + self.border_padding
             ),
         )
 
@@ -190,7 +199,3 @@ class Connection(VGroup):
             text = Text(label, font=self.font, font_size=24, slant=ITALIC)
             text.next_to(arrow, direction=label_direction, buff=label_buff)
             self.add(text)
-
-
-def _get_text_height(text: Text) -> float:
-    return max(Text("Ay", font=text.font).get_height(), text.get_height())
