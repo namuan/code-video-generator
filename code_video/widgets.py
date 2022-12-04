@@ -163,7 +163,9 @@ class Connection(VGroup):
     An arrow connection between two objects
     """
 
-    def __init__(self, source: Mobject, target: Mobject, label: Optional[str] = None, text_attrs=None, **kwargs):
+    def __init__(self, source: Mobject, target: Mobject, arrow_color: str = WHITE, label: Optional[str] = None,
+                 text_attrs=None,
+                 **kwargs):
         """
         Args:
             source: The source object
@@ -176,13 +178,15 @@ class Connection(VGroup):
 
         arrow: Optional[Arrow] = None
         if source.get_x(RIGHT) <= target.get_x(LEFT):
-            arrow = Arrow(start=source.get_edge_center(RIGHT), end=target.get_edge_center(LEFT), buff=0)
+            arrow = Arrow(start=source.get_edge_center(RIGHT), end=target.get_edge_center(LEFT), color=arrow_color,
+                          buff=0)
             label_direction = UP
         elif source.get_x(LEFT) >= target.get_x(RIGHT):
-            arrow = Arrow(start=source.get_edge_center(LEFT), end=target.get_edge_center(RIGHT), buff=0)
+            arrow = Arrow(start=source.get_edge_center(LEFT), end=target.get_edge_center(RIGHT), color=arrow_color,
+                          buff=0)
             label_direction = UP
         elif source.get_y(DOWN) >= target.get_y(UP):
-            arrow = Arrow(start=source.get_edge_center(DOWN), end=target.get_edge_center(UP), buff=0)
+            arrow = Arrow(start=source.get_edge_center(DOWN), end=target.get_edge_center(UP), color=arrow_color, buff=0)
             label_direction = RIGHT
             label_buff = VERTICAL_ARROW_LABEL_BUFF
         elif source.get_y(UP) <= target.get_y(DOWN):

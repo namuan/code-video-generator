@@ -158,8 +158,8 @@ def demo_boxes(scene: CodeScene):
     comp1.to_edge(LEFT)
     comp2.next_to(comp1, DOWN, buff=1)
     comp3.next_to(comp1, RIGHT, buff=4)
-    arrow1 = Connection(comp2, comp1, "Do something")
-    arrow2 = Connection(comp1, comp3, "Do another thing")
+    arrow1 = Connection(comp2, comp1, label="Do something")
+    arrow2 = Connection(comp1, comp3, label="Do another thing")
 
     scene.play(FadeIn(comp2))
     scene.wait_until_beat(1)

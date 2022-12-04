@@ -18,8 +18,8 @@ class BoxesScene(Scene):
         comp1.to_edge(LEFT)
         comp2.next_to(comp1, DOWN, buff=1)
         comp3.next_to(comp1, RIGHT, buff=4)
-        arrow1 = Connection(comp2, comp1, "Do something")
-        arrow2 = Connection(comp1, comp3, "Another thing")
+        arrow1 = Connection(comp2, comp1, label="Do something")
+        arrow2 = Connection(comp1, comp3, label="Another thing")
 
         self.play(FadeIn(comp2))
         self.play(Create(arrow1))
