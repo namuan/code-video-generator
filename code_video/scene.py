@@ -225,7 +225,7 @@ class CodeScene(MovingCameraScene):
         if not caption:
             self.play(ApplyMethod(code.full_size))
         else:
-            callout = TextBox(caption, text_attrs=dict(font_size=24, font=DEFAULT_FONT))
+            callout = TextBox(caption, text_attrs=dict(font_size=20, font=DEFAULT_FONT))
             callout.align_to(code.line_numbers[start - code.line_no_from], UP)
             callout.set_x(layout.get_x(3), LEFT)
             actions += [HighlightLines(code, start, end), FadeIn(callout)]
