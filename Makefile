@@ -19,6 +19,9 @@ clean: pyenv ## Clean the project and set everything up
 run: ## Generate the video and preview
 	manim render -ql -p examples/commented.py
 
+run-example: ## Generate the video for the given example
+	manim render -ql -p examples/$(example).py
+
 lint: ## Run Python linters
 	venv/bin/flake8 examples
 	venv/bin/flake8 code_video
