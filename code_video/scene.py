@@ -4,19 +4,7 @@ import os
 from typing import Optional
 from typing import Union
 
-from manim import ApplyMethod
-from manim import Code
-from manim import DEFAULT_WAIT_TIME
-from manim import DOWN
-from manim import FadeIn
-from manim import FadeOut
-from manim import ImageMobject
-from manim import LEFT
-from manim import MovingCameraScene
-from manim import RIGHT
-from manim import Text
-from manim import UP
-from manim import WHITE
+from manim import *
 from manim.animation.creation import Create
 
 from code_video import comment_parser
@@ -27,7 +15,7 @@ from code_video.code_walkthrough import PartialCode
 from code_video.layout import ColumnLayout
 from code_video.music import BackgroundMusic
 from code_video.music import fit_audio
-from code_video.widgets import DEFAULT_FONT
+from code_video.widgets import DEFAULT_FONT, NoteBox
 from code_video.widgets import TextBox
 from code_video_cli import config
 
@@ -40,12 +28,12 @@ class CodeScene(MovingCameraScene):
     """
 
     def __init__(
-        self,
-        *args,
-        code_font="Ubuntu Mono",
-        text_font="Helvetica",
-        code_theme="fruity",
-        **kwargs,
+            self,
+            *args,
+            code_font="Ubuntu Mono",
+            text_font="Helvetica",
+            code_theme="fruity",
+            **kwargs,
     ):
         super().__init__(*args, **kwargs)
         self.caption = None
@@ -146,13 +134,18 @@ class CodeScene(MovingCameraScene):
         return background
 
     def animate_code_comments(
-        self,
-        path: str,
-        title: str = None,
-        keep_comments: bool = False,
-        start_line: int = 1,
-        end_line: Optional[int] = None,
-        reset_at_end: bool = True,
+            self,
+            path: str,
+            title: str = None,
+            title_font: str = DEFAULT_FONT,
+            title_font_size: int = 48,
+            keep_comments: bool = False,
+            start_line: int = 1,
+            end_line: Optional[int] = None,
+            reset_at_end: bool = True,
+            comment_font: str = DEFAULT_FONT,
+            comment_font_size: int = 20,
+            **codeArgs,
     ) -> Code:
         """
         Parses a code file, displays it or a section of it, and animates comments
@@ -169,11 +162,16 @@ class CodeScene(MovingCameraScene):
             path, keep_comments=keep_comments, start_line=start_line, end_line=end_line
         )
 
-        tex = AutoScaled(PartialCode(code=code, start_line=start_line, style=self.code_theme))
+        tex = AutoScaled(PartialCode(
+            code=code,
+            start_line=start_line,
+            style=self.code_theme,
+            **codeArgs,
+        ))
         if title is None:
             title = path
 
-        title = Text(title, font_size=20, color=WHITE).to_edge(edge=UP)
+        title = Text(title, font=title_font, font_size=title_font_size, color=WHITE).to_edge(edge=UP)
         self.add(title)
         tex.next_to(title, DOWN)
 
@@ -181,7 +179,14 @@ class CodeScene(MovingCameraScene):
         self.wait()
 
         for comment in comments:
-            self.highlight_lines(tex, comment.start, comment.end, comment.caption)
+            self.highlight_lines(
+                tex,
+                comment.start,
+                comment.end,
+                comment.caption,
+                comment_font=comment_font,
+                comment_font_size=comment_font_size,
+            )
 
         if self.caption:
             self.play(FadeOut(self.caption))
@@ -192,7 +197,15 @@ class CodeScene(MovingCameraScene):
             self.play(ApplyMethod(tex.full_size))
         return tex
 
-    def highlight_lines(self, code: Code, start: int = 1, end: int = -1, caption: Optional[str] = None):
+    def highlight_lines(
+            self,
+            code: Code,
+            start: int = 1,
+            end: int = -1,
+            caption: Optional[str] = None,
+            comment_font: str = DEFAULT_FONT,
+            comment_font_size: int = 20,
+    ):
         """
         Convenience method for animating a code object.
 
@@ -225,7 +238,7 @@ class CodeScene(MovingCameraScene):
         if not caption:
             self.play(ApplyMethod(code.full_size))
         else:
-            callout = TextBox(caption, text_attrs=dict(font_size=20, font=DEFAULT_FONT))
+            callout = TextBox(caption, text_attrs=dict(font_size=comment_font_size, font=comment_font))
             callout.align_to(code.line_numbers[start - code.line_no_from], UP)
             callout.set_x(layout.get_x(3), LEFT)
             actions += [HighlightLines(code, start, end), FadeIn(callout)]
