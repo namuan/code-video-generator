@@ -29,7 +29,7 @@ def parse(
     comments: List[Comment] = []
     lexer = get_lexer_for_filename(path)
     comment_marker = "#"
-    if lexer.name in ("JavaScript", "Java", "C++"):
+    if lexer.name in ("JavaScript", "Java", "C++", "Kotlin"):
         comment_marker = "//"
 
     with open(path, "r") as f:
